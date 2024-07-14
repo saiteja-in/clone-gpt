@@ -4,6 +4,7 @@ let socket;
 export const connectWithSocketServer=()=>{
     socket = io("http://localhost:3002")
     socket.on("connect",()=>{
-        console.log(`connected with socket.io server ${socket.id}`);
+        console.log(`connected with socket.io server `);
+        console.log(`${socket.id} `);
     })
 }

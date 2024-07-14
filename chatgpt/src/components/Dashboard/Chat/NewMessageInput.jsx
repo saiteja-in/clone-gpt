@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import {v4 as uuid} from 'uuid'
 
 export function PlaceholdersAndVanishInput({
   placeholders,
@@ -152,23 +153,35 @@ export function PlaceholdersAndVanishInput({
   };
 
   const vanishAndSubmit = () => {
-    setAnimating(true);
-    draw();
-
-    const value = inputRef.current?.value || "";
-    if (value && inputRef.current) {
+    if (value.trim()) {
+      setAnimating(true);
+      draw();
       const maxX = newDataRef.current.reduce(
         (prev, current) => (current.x > prev ? current.x : prev),
         0
       );
       animate(maxX);
+    } else {
+      setAnimating(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    vanishAndSubmit();
-    onSubmit && onSubmit(e);
+    if (value.trim()) {  // Only proceed if there's a non-empty value
+      vanishAndSubmit();
+      onSubmit && onSubmit(e);
+      const message = {
+        aiMessage: false,
+        value,
+        id: uuid(),
+        animate: false
+      }
+      // append this message to localstore
+      // send this message to server
+      setValue("");
+      console.log(message)
+    }
   };
 
   return (
