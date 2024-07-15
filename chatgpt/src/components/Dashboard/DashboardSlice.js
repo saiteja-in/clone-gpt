@@ -25,7 +25,11 @@ const dashboardSlice = createSlice({
         });
       }
     },
+    setConversations:(state,action)=>{
+      state.conversations=action.payload;
+      state.sessionEstablished=true
+    }
   },
 });
-export const { setSelectedConversationId,addMessage } = dashboardSlice.actions;
+export const { setSelectedConversationId,addMessage,setConversations } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
