@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {v4 as uuid} from 'uuid'
 import {useSelector,useDispatch} from 'react-redux'
-import { addMessage } from "../DashboardSlice";
+import { addMessage, setSelectedConversationId } from "../DashboardSlice";
+import { sendConversationMessage } from "../../../socketConnection/socketConn";
 
 export function PlaceholdersAndVanishInput({
   placeholders,
@@ -83,9 +84,9 @@ export function PlaceholdersAndVanishInput({
             y: t,
             color: [
               pixelData[e],
-              pixelData[e + 1],
-              pixelData[e + 2],
-              pixelData[e + 3],
+              pixelData[e+1],
+              pixelData[e+2],
+              pixelData[e+3],
             ],
           });
         }
@@ -187,6 +188,8 @@ export function PlaceholdersAndVanishInput({
         conversationId,
         message
       }))
+      dispatch(setSelectedConversationId(conversationId))
+      sendConversationMessage(message,conversationId)
       console.log(message)
       setValue("");
     }
