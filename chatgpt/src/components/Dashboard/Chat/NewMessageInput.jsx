@@ -3,12 +3,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {v4 as uuid} from 'uuid'
+import {useSelector,useDispatch} from 'react-redux'
+import { addMessage } from "../DashboardSlice";
 
 export function PlaceholdersAndVanishInput({
   placeholders,
   onChange,
   onSubmit,
 }) {
+  const selectedConversationId=useSelector((state)=>state.dashboard.selectedConversationId)
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);
@@ -17,7 +20,7 @@ export function PlaceholdersAndVanishInput({
   const canvasRef = useRef(null);
   const newDataRef = useRef([]);
   const inputRef = useRef(null);
-
+  const dispatch=useDispatch()
   const startAnimation = useCallback(() => {
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
@@ -179,8 +182,13 @@ export function PlaceholdersAndVanishInput({
       }
       // append this message to localstore
       // send this message to server
-      setValue("");
+      const conversationId=selectedConversationId==='new' ? uuid():selectedConversationId
+      dispatch(addMessage({
+        conversationId,
+        message
+      }))
       console.log(message)
+      setValue("");
     }
   };
 
