@@ -13,7 +13,7 @@ const Sidebar = () => {
     dispatch(setSelectedConversationId(id));
   };
   return (
-    <div className="w-full flex flex-col lg:w-1/5 bg-[#202123] text-white h-full">
+    <div className="w-full flex flex-col lg:w-1/5 bg-black border-r text-white h-full">
       <NewChatButton handleSetSelectedChat={handleSetSelectedChat} />
       {conversations.map((c) => (
         <ListItem key={c.id} title={c.messages[0].value} chatId={c.id} />
